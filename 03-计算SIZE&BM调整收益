@@ -66,4 +66,9 @@ for i in range(len(settle_date)-1):
     sample['ind'] = np.array(ind_list)
     
     sample_list.append(sample)
-         
+ 
+ # 调整数据单位
+ for i in range(len(sample_list)):
+    sample_list[i]['ind'] = sample_list[i]['ind']/100
+    sample_list[i]['rev_adjusted'] = sample_list[i]['rev_adjusted']/100
+    sample_list[i]['PB_LF'] = 1/sample_list[i]['PB_LF']
