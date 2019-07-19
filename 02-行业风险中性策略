@@ -1,0 +1,31 @@
+## 买入每个行业中涨幅前30%，卖空每个行业中的后30%
+from WindPy import *
+w.start()
+import numpy as np
+import pandas as pd
+from pandas import DataFrame,read_excel
+
+settle_date = w.tdays("2009-12-31", "2018-12-31", "Period=M").Data[0]
+rev=[]
+for i in range(len(settle_date)-1):
+    A_stocks = w.wset("sectorconstituent","date="+str(settle_date[i])+";sectorid=a001010100000000").Data[1]
+    sample = w.wss(A_stocks,"pct_chg,mkt_cap_float,industry_sw","tradeDate="+str(settle_date[i])+";cycle=M;currencyType=;industrytype=1")
+    sample = DataFrame(sample.Data,columns=sample.Codes,index=sample.Fields).T
+    sample_temp = w.wss(A_stocks,"pct_chg","tradeDate="+str(settle_date[i+1])+";cycle=M")
+    sample_temp = DataFrame(sample_temp.Data,columns=sample_temp.Codes,index=['NEXT_PCT_CHG']).T
+    sample = pd.concat([sample,sample_temp],axis=1)
+    sample = sample[~sample['INDUSTRY_SW'].isin(['建筑建材','信息服务','交运设备'])] # 去除前期不存在的三个特殊行业
+    
+    rev_ind_neu = np.zeros(28)
+    ind=['采掘','化工','钢铁','有色金属','建筑材料','建筑装饰','电气设备','机械设备','国防军工','汽车','家用电器','纺织服装','轻工制造','商业贸易',
+         '农林牧渔','食品饮料','休闲服务','医药生物','公用事业','交通运输','房地产','电子','计算机','传媒','通信','银行','非银金融','综合']
+    for j in range(28):
+        ind_stock = sample[sample.INDUSTRY_SW==ind[j]].sort_values('PCT_CHG',ascending=False).dropna()
+        n = int(0.3*len(ind_stock))
+        wi = ind_stock[:n]
+        lo = ind_stock[-n:]
+        wi['MKT_CAP_FLOAT'] = wi['MKT_CAP_FLOAT']/sum(wi['MKT_CAP_FLOAT'])
+        lo['MKT_CAP_FLOAT'] = lo['MKT_CAP_FLOAT']/sum(lo['MKT_CAP_FLOAT'])
+        rev_ind_neu[j] = sum((wi['NEXT_PCT_CHG']*wi['MKT_CAP_FLOAT']).values-(lo['NEXT_PCT_CHG']*lo['MKT_CAP_FLOAT']).values)
+    rev_temp = np.mean(rev_ind_neu)
+    rev.append(rev_temp)
