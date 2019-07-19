@@ -1,0 +1,263 @@
+## 计算各变量数据
+# LH11
+for i in range(1,len(sample_list)):
+    sample_list[i]['LH11'] = sample_list[i-1]['rev_adjusted']
+    sample_list[i].dropna(axis=0,inplace=True)
+# 3613    
+for i in range(36,len(sample_list)):
+    name = []
+    for k in range(24):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-13]['rev_adjusted']
+        name.append('a'+str(k+1))
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH3613'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+sample_list[i]['a5']+sample_list[i]['a6']+
+                                sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12']+
+                                sample_list[i]['a13']+sample_list[i]['a14']+sample_list[i]['a15']+sample_list[i]['a16']+sample_list[i]['a17']+sample_list[i]['a18']+
+                                sample_list[i]['a19']+sample_list[i]['a20']+sample_list[i]['a21']+sample_list[i]['a22']+sample_list[i]['a23']+sample_list[i]['a24'])/24
+    sample_list[i].drop(name,axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+#61
+for i in range(6,len(sample_list)):
+    for k in range(6):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-1]['rev_adjusted']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH61'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6'])/6
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+#66
+for i in range(11,len(sample_list)):
+    for j in range(6):
+        for k in range(6):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['rev_adjusted']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                  sample_list[i]['a5']+sample_list[i]['a6'])/6
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH66'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                            sample_list[i]['LH4']+sample_list[i]['LH5'])/6
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+ #121   
+for i in range(12,len(sample_list)):
+    for k in range(12):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-1]['rev_adjusted']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH121'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+
+                              sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+#1212    
+for i in range(23,len(sample_list)):
+    for j in range(12):
+        for k in range(12):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['rev_adjusted']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                       sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+
+                                       sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH1212'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                              sample_list[i]['LH4']+sample_list[i]['LH5']+sample_list[i]['LH6']+sample_list[i]['LH7']+sample_list[i]['LH8']
+                             +sample_list[i]['LH9']+sample_list[i]['LH10']+sample_list[i]['LH11'])/12
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5','LH6','LH7','LH8','LH9','LH10','LH11'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+# ind11
+for i in range(1,len(sample_list)):
+    sample_list[i]['ind11'] = sample_list[i-1]['ind']
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+for i in range(36,len(sample_list)):
+    name = []
+    for k in range(24):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-13]['ind']
+        name.append('a'+str(k+1))
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind3613'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+sample_list[i]['a5']+sample_list[i]['a6']+
+                                sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12']+
+                                sample_list[i]['a13']+sample_list[i]['a14']+sample_list[i]['a15']+sample_list[i]['a16']+sample_list[i]['a17']+sample_list[i]['a18']+
+                                sample_list[i]['a19']+sample_list[i]['a20']+sample_list[i]['a21']+sample_list[i]['a22']+sample_list[i]['a23']+sample_list[i]['a24'])/24
+    sample_list[i].drop(name,axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+
+for i in range(6,len(sample_list)):
+    for k in range(6):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-1]['ind']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind61'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6'])/6
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+
+for i in range(11,len(sample_list)):
+    for j in range(6):
+        for k in range(6):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['ind']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                  sample_list[i]['a5']+sample_list[i]['a6'])/6
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind66'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                            sample_list[i]['LH4']+sample_list[i]['LH5'])/6
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+for i in range(12,len(sample_list)):
+    for k in range(12):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-1]['ind']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind121'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+
+                              sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+    
+for i in range(23,len(sample_list)):
+    for j in range(12):
+        for k in range(12):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['ind']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                       sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+
+                                       sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind1212'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                              sample_list[i]['LH4']+sample_list[i]['LH5']+sample_list[i]['LH6']+sample_list[i]['LH7']+sample_list[i]['LH8']
+                             +sample_list[i]['LH9']+sample_list[i]['LH10']+sample_list[i]['LH11'])/12
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5','LH6','LH7','LH8','LH9','LH10','LH11'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+
+## skip   
+# LH72   
+for i in range(6,len(sample_list)):
+    for k in range(6):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-2]['rev_adjusted']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH72'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6'])/6
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 66 skip
+for i in range(11,len(sample_list)):
+    for j in range(5):
+        for k in range(6):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['rev_adjusted']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                  sample_list[i]['a5']+sample_list[i]['a6'])/6
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH66s'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                            sample_list[i]['LH4'])/5
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 122   
+for i in range(12,len(sample_list)):
+    for k in range(12):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-2]['rev_adjusted']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH122'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+
+                              sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 1212 skip    
+for i in range(23,len(sample_list)):
+    for j in range(11):
+        for k in range(12):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['rev_adjusted']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                       sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+
+                                       sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['LH1212s'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                              sample_list[i]['LH4']+sample_list[i]['LH5']+sample_list[i]['LH6']+sample_list[i]['LH7']+sample_list[i]['LH8']
+                             +sample_list[i]['LH9']+sample_list[i]['LH10'])/11
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5','LH6','LH7','LH8','LH9','LH10'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+
+# ind72   
+for i in range(6,len(sample_list)):
+    for k in range(6):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-2]['ind']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind72'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6'])/6
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 66 skip
+for i in range(11,len(sample_list)):
+    for j in range(5):
+        for k in range(6):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['ind']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                  sample_list[i]['a5']+sample_list[i]['a6'])/6
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind66s'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                            sample_list[i]['LH4'])/5
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 122   
+for i in range(12,len(sample_list)):
+    for k in range(12):
+        sample_list[i]['a'+str(k+1)] = sample_list[i-k-2]['ind']
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind122'] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                              sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+sample_list[i]['a9']+
+                              sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+    sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+# 1212 skip    
+for i in range(23,len(sample_list)):
+    for j in range(11):
+        for k in range(12):
+            sample_list[i]['a'+str(k+1)] = sample_list[i-k-j-1]['ind']
+            sample_list[i].dropna(axis=0,inplace=True)
+        sample_list[i]['LH'+str(j)] = (sample_list[i]['a1']+sample_list[i]['a2']+sample_list[i]['a3']+sample_list[i]['a4']+
+                                       sample_list[i]['a5']+sample_list[i]['a6']+sample_list[i]['a7']+sample_list[i]['a8']+
+                                       sample_list[i]['a9']+sample_list[i]['a10']+sample_list[i]['a11']+sample_list[i]['a12'])/12
+        sample_list[i].drop(['a1','a2','a3','a4','a5','a6','a7','a8','a9','a10','a11','a12'],axis=1,inplace=True)
+        sample_list[i].dropna(axis=0,inplace=True)
+    sample_list[i]['ind1212s'] = (sample_list[i]['LH0']+sample_list[i]['LH1']+sample_list[i]['LH2']+sample_list[i]['LH3']+
+                              sample_list[i]['LH4']+sample_list[i]['LH5']+sample_list[i]['LH6']+sample_list[i]['LH7']+sample_list[i]['LH8']
+                             +sample_list[i]['LH9']+sample_list[i]['LH10'])/11
+    sample_list[i].drop(['LH0','LH1','LH2','LH3','LH4','LH5','LH6','LH7','LH8','LH9','LH10'],axis=1,inplace=True)
+    sample_list[i].dropna(axis=0,inplace=True)
+
+## 回归系数
+from sklearn import linear_model
+
+list_61 = []
+list_66 = []
+list_121 = []
+list_1212 = []
+for i in range(36,len(sample_list)):
+    clf = linear_model.LinearRegression()
+    x1 = sample_list[i][['beta','MKT_CAP_FLOAT','PB_LF','ind61','ind11','ind3613']] #
+    x2 = sample_list[i][['beta','MKT_CAP_FLOAT','PB_LF','ind66','ind11','ind3613']]#
+    x3 = sample_list[i][['beta','MKT_CAP_FLOAT','PB_LF','ind121','ind11','ind3613']]#
+    x4 = sample_list[i][['beta','MKT_CAP_FLOAT','PB_LF','ind1212','ind11','ind3613']]#,'ind11','ind3613'
+    y = sample_list[i]['rev_adjusted']
+    clf.fit(x1, y)
+    list_61.append(clf.coef_)
+    clf.fit(x2, y)
+    list_66.append(clf.coef_)
+    clf.fit(x3, y)
+    list_121.append(clf.coef_)
+    clf.fit(x4, y)
+    list_1212.append(clf.coef_)
+    
+coef = np.array(list_61).T
+[coef[0].mean(),coef[1].mean(),coef[2].mean(),coef[3].mean(),coef[4].mean(),coef[5].mean()]
