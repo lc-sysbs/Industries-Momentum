@@ -1,0 +1,69 @@
+#2 size and BE/ME-adjusted rev
+from WindPy import *
+w.start()
+import numpy as np
+import pandas as pd
+from pandas import DataFrame
+
+settle_date=w.tdays("2009-12-31", "2018-12-31", "Period=M").Data[0]
+rev_adjusted=[]
+data = pd.read_excel('data/ind_rev.xls')
+sample_list = []
+
+for i in range(len(settle_date)-1):
+    A_stocks=w.wset("sectorconstituent","date="+str(settle_date[i])+";sectorid=a001010100000000").Data[1]
+    sample=w.wss(A_stocks,"pct_chg,mkt_cap_float,pb_lf","tradeDate="+str(settle_date[i])+";cycle=M;currencyType=")
+    sample=DataFrame(sample.Data,columns=sample.Codes,index=sample.Fields).T
+    sample_temp=w.wss(A_stocks,"pct_chg","tradeDate="+str(settle_date[i+1])+";cycle=M")
+    sample_temp=DataFrame(sample_temp.Data,columns=sample_temp.Codes,index=['NEXT_PCT_CHG']).T
+    sample=pd.concat([sample,sample_temp],axis=1)
+    
+    n_5=int(0.2*len(sample))                 #所有股票的20%分位区间的长度
+    n_25=int(0.2*n_5)                          #上述子区间20%分位区间的长度
+    n=int(0.3*len(sample))                   #胜败者组分别的区间长度
+    
+    sample=sample.sort_values("MKT_CAP_FLOAT",ascending=False)           #将全部A股按市值排序   
+    for j in range(4):
+        sample.iloc[j*n_5:(j+1)*n_5]=sample.iloc[j*n_5:(j+1)*n_5].sort_values("PB_LF",ascending=False)      #将市值前20%的股票再按PB排序                                                                      
+    sample.iloc[4*n_5:]=sample.iloc[4*n_5:].sort_values("PB_LF",ascending=False)
+
+    a=sample['NEXT_PCT_CHG']                                                           
+    sample['rev_adjusted']=a                           #对样本股的调整收益率赋初值
+    for k in range(5):                                                      
+        for j in range(5):
+            if j<4:
+                down=k*n_5+j*n_25
+                up=k*n_5+(j+1)*n_25
+            elif k<4:
+                down=k*n_5+j*n_25
+                up=(k+1)*n_5
+            elif k==4:
+                down=k*n_5+j*n_25
+                up=None   
+            mean=np.mean(a.iloc[down:up])
+            #print(down)
+            #print(up)
+            #print(a.iloc[down:up])
+            #print(mean)
+            sample['rev_adjusted'].iloc[down:up]=sample['rev_adjusted'].iloc[down:up]-mean   #样本的调整收益=原始收益-所在SIZE&BM区间均值
+    
+    # 按股票代码排序，并获取近三年beta和对数流通市值数据
+    sample=sample.sort_index()  
+    startDate_beta = w.tdaysoffset(-3, settle_date[i], "Period=Y").Data[0][0].strftime('%Y-%m-%d')
+    beta = w.wss(A_stocks, "beta", "startDate="+startDate_beta+";endDate="+str(settle_date[i])+";period=1;returnType=1;index=000001.SH", usedf=True)[1]
+    sample['beta'] = beta['BETA']
+    sample['MKT_CAP_FLOAT'] = np.log(sample['MKT_CAP_FLOAT'])
+    
+    sample['INDUSTRY_SW'] = w.wss(A_stocks, "industry_sw", "industryType=1", usedf=True)[1]
+    sample=sample[~sample['INDUSTRY_SW'].isin(['建筑建材','信息服务','交运设备','信息设备'])]
+    
+    ind_list = []
+    for num in range(len(sample['INDUSTRY_SW'])):
+        if sample['INDUSTRY_SW'][num] == None:
+            ind_list.append(0)
+        else:
+            ind_list.append(data.iloc[i][sample['INDUSTRY_SW'][num]])
+    sample['ind'] = np.array(ind_list)
+    
+    sample_list.append(sample)
+         
