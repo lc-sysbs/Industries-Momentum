@@ -1,0 +1,28 @@
+from WindPy import *
+import numpy as np
+import pandas as pd
+from pandas import DataFrame
+w.start()
+
+#1 计算行业板块按流通市值加权的收益率
+## 选取申万一级的28个行业
+ind = ['采掘','化工','钢铁','有色金属','建筑材料','建筑装饰','电气设备','机械设备','国防军工',
+      '汽车','家用电器','纺织服装','轻工制造','商业贸易','农林牧渔','食品饮料','休闲服务','医药生物',
+      '公用事业','交通运输','房地产','电子','计算机','传媒','通信','银行','非银金融','综合']
+code = "6102000000000000,6103000000000000,6104000000000000,6105000000000000,6106010000000000,6106020000000000,6107010000000000,
+        6107000000000000,1000012579000000,1000012588000000,6111000000000000,6113000000000000,6114000000000000,6120000000000000,
+        6101000000000000,6112000000000000,6121000000000000,6115000000000000,6116000000000000,6117000000000000,6118000000000000,
+        6108000000000000,1000012601000000,6122010000000000,1000012611000000,1000012612000000,1000012613000000,6123000000000000"
+settle_date = w.tdays("2009-12-31", "2018-12-31", "Period=M").Data[0] # 研究区间为2010年至2018年这9年
+N = len(settle_date)
+for i in range(N):
+    settle_date[i] = settle_date[i].year*10000+settle_date[i].month*100+settle_date[i].day
+    
+## 计算历史收益率
+data=DataFrame([])
+for i in range(len(settle_date)-1):
+    # 获取各行业区间涨跌幅(流通市值加权平均)数据
+    a = w.wsee(code, "sec_pq_pct_chg_ffmc_wavg_chn", "startDate="+str(settle_date[i])+";endDate="+str(settle_date[i+1])+";DynamicTime=0").Data[0]
+    data_temp = DataFrame(a,columns=[settle_date[i+1]],index=ind).T
+    data=pd.concat([data,data_temp]) # 合并各期收益
+data.to_excel('data/ind_rev.xls') 
