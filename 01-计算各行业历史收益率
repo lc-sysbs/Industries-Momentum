@@ -1,11 +1,11 @@
+## 计算行业板块按流通市值加权的收益率
 from WindPy import *
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
 w.start()
 
-#1 计算行业板块按流通市值加权的收益率
-## 选取申万一级的28个行业
+# 选取申万一级的28个行业
 ind = ['采掘','化工','钢铁','有色金属','建筑材料','建筑装饰','电气设备','机械设备','国防军工',
       '汽车','家用电器','纺织服装','轻工制造','商业贸易','农林牧渔','食品饮料','休闲服务','医药生物',
       '公用事业','交通运输','房地产','电子','计算机','传媒','通信','银行','非银金融','综合']
@@ -18,7 +18,7 @@ N = len(settle_date)
 for i in range(N):
     settle_date[i] = settle_date[i].year*10000+settle_date[i].month*100+settle_date[i].day
     
-## 计算历史收益率
+# 计算历史收益率
 data=DataFrame([])
 for i in range(len(settle_date)-1):
     # 获取各行业区间涨跌幅(流通市值加权平均)数据
